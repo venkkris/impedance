@@ -30,9 +30,10 @@ circuit = 'R0-p(R1,C1)-p(R2,C2)'
 initial_guess = [18, 500, 0.0001, 100, 0.001]
 circuit = CustomCircuit(circuit, initial_guess=initial_guess)
 
-# Fit to circuit
+# Fit to circuit and write outputs
 circuit.fit(frequencies, Z)
 print(circuit)
+circuit.save('circuit.json')
 file = open('out.txt', 'w')
 file.write(str(circuit))
 file.close()
