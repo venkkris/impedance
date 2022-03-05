@@ -31,7 +31,7 @@ initial_guess = [18, 500, 0.0001, 100, 0.001]
 circuit = CustomCircuit(circuit, initial_guess=initial_guess)
 
 # Fit to circuit and write outputs
-circuit.fit(frequencies, Z)
+circuit.fit(frequencies, Z, global_opt=True)
 print(circuit)
 circuit.save('circuit.json')
 file = open('out.txt', 'w')
