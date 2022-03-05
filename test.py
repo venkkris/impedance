@@ -1,3 +1,5 @@
+""" Author: Venkatesh Krishnamurthy. Copyright 2022."""
+
 from galvani import BioLogic
 from impedance.models.circuits import CustomCircuit
 import pandas as pd
@@ -31,11 +33,15 @@ circuit = CustomCircuit(circuit, initial_guess=initial_guess)
 # Fit to circuit
 circuit.fit(frequencies, Z)
 print(circuit)
+file = open('out.txt', 'w')
+file.write(str(circuit))
+file.close()
 
 # Plot
 fig, ax = plt.subplots()
 plot_nyquist(ax, Z, fmt='o')
 plot_nyquist(ax, circuit.predict(frequencies), fmt='-')
 plt.legend(['Data', 'Fit'])
+plt.title(filename)
 plt.savefig('plot.png')
 plt.show()
