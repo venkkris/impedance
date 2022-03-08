@@ -1,5 +1,6 @@
 #!/bin/bash
 
+clear; ls
 rm data.csv 
 rm out.txt 
 rm circuit.json 
