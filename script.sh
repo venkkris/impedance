@@ -1,8 +1,11 @@
 #!/bin/bash
 
-clear; ls
+clear
 rm data.csv 
 rm out.txt 
 rm circuit.json 
-rm plot.png 
-python test.py 
+rm *.png 
+rm analysis.py
+
+cp ../analysis.py .
+python analysis.py 
