@@ -1,24 +1,23 @@
 """ Author: Venkatesh Krishnamurthy. Copyright 2022."""
 
-from galvani.BioLogic import MPRfile
-from impedance.models.circuits import CustomCircuit, Randles
+import glob
+import numpy as np
 from pandas import DataFrame
 import matplotlib.pyplot as plt
-from impedance.visualization import plot_nyquist, plot_bode, plot_residuals
-import glob
 from impedance import preprocessing
-import numpy as np
+from galvani.BioLogic import MPRfile
+from impedance.models.circuits import CustomCircuit, Randles
+from impedance.visualization import plot_nyquist, plot_bode, plot_residuals
 
 
 # Convert data from mpr file into csv
 filename = glob.glob('*.mpr')[0]
 data = DataFrame(MPRfile(filename).data)
-
-freq = np.array(data['freq/Hz'])
-real_Z = np.array(data['Re(Z)/Ohm'])
-imag_Z = -1*np.array(data['-Im(Z)/Ohm'])
+freq = data['freq/Hz']
+real_Z = data['Re(Z)/Ohm']
+imag_Z = -1*data['-Im(Z)/Ohm']
 np.savetxt('data.csv', np.column_stack((freq, real_Z, imag_Z)), delimiter=',')
-# np.savetxt('data.csv', np.column_stack((data['freq/Hz'], data['Re(Z)/Ohm'], data['-Im(Z)/Ohm'])), delimiter=',')
+
 
 
 # Read from csv file and pre-process
@@ -30,17 +29,9 @@ frequencies, Z = preprocessing.ignoreBelowX(frequencies, Z)
 # Z = Z[mask]
 
 # Define circuit with iniital values
-# With CPE
 circuit = CustomCircuit('R0-p(R1,C1,CPE0)-p(R2,C2)', initial_guess=[18, 500,0.0001,20,1.0, 100,0.001])
-
-# With Gerisher element
 # circuit = CustomCircuit('R0-p(R1,C1,G0)-p(R2,C2)', initial_guess=[18, 500,0.0001,20,1, 100,0.001])
-
-# Alternate- Randles circuit with CPE
 # circuit = Randles(initial_guess=[0.1, 10, .1, .9, .001, 200], CPE=True)
-
-# Alternate- Randle circuit
-# circuit = Randles(initial_guess=[100, 50, .1, .001, 200])
 
 
 # Fit to circuit and write outputs
